@@ -86,7 +86,7 @@
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#pricing">Login</a>
+                        <a class="page-scroll" href="login.php">Login</a>
                     </li>
                 </ul>
             </div>
@@ -270,7 +270,7 @@
                             </li>
                             <li>
                                 <div class="portfolio-item">
-                                    <img src="images/portfolio/download.png" class="img-responsive" alt="" />
+                                    <img src="images/portfolio/download.jpg" class="img-responsive" alt="" />
                                     <div class="portfolio-caption">
                                         <h4>No Alchohol on Highways</h4>
                                         <a href="https://indiankanoon.org/doc/23113316/" target="_blank" data-toggle="modal" class="link-1"><i class="fa fa-magic"></i></a>
