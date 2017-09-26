@@ -1,3 +1,31 @@
+<!--
+    require 'config.php';
+    session_start();
+    $role = $_SESSION['sess_userrole'];
+    if(!isset($_SESSION['username'])|| $role!="admin"){
+        header('Location:login.php?err=2');
+    }
+-->
+
+<?php
+    require 'config.php';
+    if(isset($_GET['id']))
+    {
+        $id=$_GET['id'];    
+        $result = $con->query("SELECT * FROM `problem` WHERE id='$id' ");
+        $row =mysqli_fetch_array($result);
+    }
+    if(isset($_POST['edit']))
+    {
+        $id=$_POST['id'];
+        $pname=$_POST['pname'];
+        $pstate=$_POST['pstate'];
+        $ptag=$_POST['ptag'];
+        $result= $con->query("UPDATE `problem` SET `name`='$pname',`description`='$pstate',`tag`='$ptag' WHERE id='$id' ");
+        echo "<meta http-equiv='refresh' content='0;url=index.php'>";
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,6 +70,9 @@
     <!-- Custom CSS -->
     <link href="../css/style.css" rel="stylesheet">
     <link href="../css/responsive.css" rel="stylesheet">
+
+     <link href="css/styles.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Colors CSS -->
     <link rel="stylesheet" type="text/css" href="../css/color/blue.css">
@@ -51,6 +82,7 @@
 
     <!-- Custom Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+
     
     
     <!-- Modernizer js -->
@@ -81,9 +113,6 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="../index.php" style="font-size:15px;">Home</a>
-                    </li>
-                    <li>
                         <a class="page-scroll" href="../index.php#about-us" style="font-size:15px;">About</a>
                     </li>
                     <li>
@@ -95,87 +124,58 @@
                     <li>
                         <a class="page-scroll" href="../index.php#contact" style="font-size:15px;">Contact</a>
                     </li>
+                      <li>
+                        <a class="page-scroll" href="logout.php" style="font-size:15px;">Logout </a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container-fluid -->
     </nav>
- <img src="img/logo.png" style="margin-left:150px;margin-top:120px;height:550px;width:550px;float:left;" class="vertical-line" />
- 
-    <div class="container" >
-      <form class="login-form" method="POST" action="signup-act.php" style="margin-top:150px;">        
-        <div class="login-wrap" >
-            <p style="font-size:20px;color:#000000;font-style:bold;text-transform:uppercase;font-weight:50px;">SignUp<br/><br/></p>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="text" class="form-control" placeholder="Full Name" name="name" autofocus><br/>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="number" class="form-control" placeholder="Aadhar Card No." name="aadhar"><br/>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="number" class="form-control" placeholder="Phone Number" name="phonenumber"><br/>
-            </div>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="text" class="form-control" placeholder="Username" name="username" ><br/>
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" class="form-control" name="password" placeholder="Password">
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
-            </div>
-            <button class="btn btn-primary btn-lg btn-block" type="submit" name="signup_button">Create an Account</button><br/>
-            <span class="pull-right"><a href="login.php">Already having an account, Login</a></span><br/>
+<aside> 
+    <div class="left" > 
+        <ul style="text-align: center; padding-left: 0px;font-size: 18px;font-family: sans-serif;margin-top:30px;" class="list">
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index.php">Home</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="admin_profile.php">Profile</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post a New Problem</a></li>
+        </ul>
+    </div>
+    </aside>
+    <div class="right" >
+        <h2 >Edit Post</h2>
+         <form class="form-horizontal" method="POST" action="edit_post.php" style="margin-left:0px;">
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="pname">Problem Name:</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" id="pname" placeholder="Enter problem" name="pname" value="<?php echo $row['name'];?>">
+            <input type="hidden" name="id" value="<?php echo $row[0]; ?>" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="pstate">Problem Description:</label>
+          <div class="col-sm-10">          
+            <input type="text" class="form-control" id="pstate" placeholder="Enter description"  value="<?php echo $row['description'];?>"name="pstate">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="ptag">Problem tags:</label>
+          <div class="col-sm-10">          
+            <input type="text" class="form-control" id="ptag" placeholder="Enter problem tags"  value="<?php echo $row['tag'];?>" name="ptag">
+          </div>
+        </div>
+        <div class="form-group">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <center><input type="submit" class="btn btn-success" name="edit" value="Edit Post" style="margin-bottom:25px;"></center>
+          </div>
         </div>
       </form>
+                <!-- /.col -->
+            </div>
+        </div>
     </div>
 
-    <footer style="background-color:#131313;padding-left: 40px;border-top:4px solid #28abe3;padding-top:5px;margin-top:34px;">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4 col-xs-12">
-                        <span class="copyright">Copyright&copy;<a href="https://komalchauhan50.wixsite.com/terx">TER-X</a> 2017</span>
-                    </div>
-                   
-                    <div class="col-md-4 col-xs-12" style="float:right;">
-                        <div class="footer-link">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
+    
 
-
-    <!-- jQuery Version 2.1.1 -->
-    <script src="js/jquery-2.1.1.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="asset/js/bootstrap.min.js"></script>
-
-    <!-- Plugin JavaScript -->
-    <script src="js/jquery.easing.1.3.js"></script>
-    <script src="js/classie.js"></script>
-    <script src="js/count-to.js"></script>
-    <script src="js/jquery.appear.js"></script>
-    <script src="js/cbpAnimatedHeader.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.fitvids.js"></script>
-    <script src="js/styleswitcher.js"></script>
-
-    <!-- Contact Form JavaScript -->
-    <script src="js/jqBootstrapValidation.js"></script>
-    <script src="js/contact_me.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="js/script.js"></script>
-
-  </body>
+</body>
 </html>

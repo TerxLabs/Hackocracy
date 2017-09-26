@@ -1,11 +1,3 @@
-<?php
-        session_start();
-            if (isset($_POST['Login']))
-            {     
-                require 'config.php';
-                $username=$_POST['username'];
-                $password=$_POST['password'];}
-                ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,18 +104,33 @@
  <img src="img/logo.png" style="margin-left:150px;margin-top:120px;height:550px;width:550px;float:left;" class="vertical-line" />
  
     <div class="container" >
-      <form class="login-form" action="index.html">        
-        <div class="login-wrap" >
+        <?php 
+
+                                $errors = array(
+                                    1=>"Invalid user name or password, Try again",
+                                    2=>"Please login to access this area"
+                                  );
+
+                                $error_id = isset($_GET['err']) ? (int)$_GET['err'] : 0;
+
+                                if ($error_id == 1) {
+                                        echo '<p class="text-danger">'.$errors[$error_id].'</p>';
+                                    }elseif ($error_id == 2) {
+                                        echo '<p class="text-danger">'.$errors[$error_id].'</p>';
+                                    }
+                               ?>  
+      <form class="login-form" method="POST" action="check_login.php">  
+            <div class="login-wrap" >
             <p style="font-size:20px;color:#000000;font-style:bold;text-transform:uppercase;font-weight:50px;">Login<br/><br/></p>
             <div class="input-group">
               <span class="input-group-addon"><i class="icon_profile"></i></span>
-              <input type="text" class="form-control" placeholder="Username" autofocus><br/>
+              <input type="text" class="form-control" placeholder="Username" name='username' autofocus><br/>
             </div>
             <div class="input-group">
                 <span class="input-group-addon"><i class="icon_key_alt"></i></span>
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" class="form-control" name='password' placeholder="Password">
             </div>
-            <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button><br/>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" name='login'>Login</button><br/>
             <span class="pull-left"> <a href="#" > Forgot Password?</a></span>
             <span class="pull-right"><a href="signup.php">Create a new account</a></span><br/>
         </div>

@@ -1,6 +1,6 @@
 <?php //mysql_connect("localhost","cgcevents","123cgcevent123") or die("could not connect to host");
-$username="cgcevents";
-$password="123cgcevent123";
+$username="root";
+$password="";
 $db_name="meri_raay";
 $location="localhost";
 
