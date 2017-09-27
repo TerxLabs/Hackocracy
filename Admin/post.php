@@ -1,13 +1,11 @@
 <?php
 require "config.php";
-?>
-<!--session_start();// Starting Session
+session_start();// Starting Session
 // Storing Session
 $login_session=$_SESSION['login_user'];
 if(!isset($login_session)){
 header('Location: login.php'); // Redirecting To Home Page
-} 	-->
-<?php
+} 	
 
 $pname=$_POST['pname'];
 $pstate=$_POST['pstate'];

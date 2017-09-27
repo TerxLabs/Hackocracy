@@ -1,11 +1,11 @@
-<!--
+<?php
     require 'config.php';
     session_start();
-    $role = $_SESSION['sess_userrole'];
+    $role = $_SESSION['designation'];
     if(!isset($_SESSION['username'])|| $role!="user"){
         header('Location:login.php?err=2');
     }
--->
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,7 +16,7 @@
     <meta name="keyword" content="">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Meri Raay | Login</title>
+    <title>Meri Raay | User</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -115,63 +115,46 @@
 <aside> 
     <div class="left" > 
         <ul style="text-align: center; padding-left: 0px;font-size: 18px;font-family: sans-serif;margin-top:30px;" class="list">
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index.php">Home</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_profile.php">Profile</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post a New Problem</a></li>
+            <li style="padding: 10px;text-decoration: none; color: #ffffff;">Hi, <?php echo $_SESSION['username']; ?></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index-user.php">Home</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_profile.php?username=<?php echo $_SESSION['username'] ?>">Profile</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">My suggestions</a></li>
         </ul>
     </div>
     </aside>
-    <div class="right" >
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading" style="font-size: 20px;"><p>What Is Bootstrap?</p></div>
-                        <div class="panel-body" style="font-size: 15px;">
-                            Bootstrap is front end frameworkto build custom web applications that are fast, responsive &amp; intuitive. It consist of CSS and HTML for typography, forms, buttons, tables, grids, and navigation along with custom-built jQuery plug-ins and support for responsive layouts. With dozens of reusable components for navigation, pagination, labels, alerts etc..                          
+  <div class="right" >
+         <div class="row">
+                    <!-- .col -->
+                    <div class="col-md-12 col-lg-12 col-sm-12">
+                        <div class="white-box" style="border-radius:25px;">
+                            <h3 class="box-title">All Problems</h3>
+                            <?php require "config.php";
+                                $result = $con->query("SELECT * FROM `problem` ORDER BY `timestamp` DESC");
+                                    // output data of each row
+                                    while($row = $result->fetch_assoc()) 
+                                        {
+                                            ?>
+                                       <div class="row" >     
+                                       <div class="panel panel-default" >
+                                          <h3 class="panel-heading" style="margin:0px;padding:10px;font-style:bold;text-transform:none;"><?php echo $row['name'];?><p style="float:right;font-size:15px;"><?php echo $row['timestamp'];?></p></h3>
+                                          <div class="panel-body">
+                                            <p style="background-color:#329FF2;color:#ffffff;padding:2px;font-size:17px;"><?php echo $row['tag'];?></p>
+                                            <p style="font-size:20px;"><?php echo $row['description'];?></p>
+                                            <a href="#" class="btn btn-success" style="margin:5px;">Like</a>
+                                            <a href="#" class="btn btn-warning" style="margin:5px;">Dislike</a>
+                                            <a href="edit_post.php?id=<?php echo $row['id']; ?>" class="btn btn-info" style="margin:5px;">Leave a suggestion</a>
+                                          </div>
+                                          
+                                        </div>            
+                                    </div>
+                            <?php
+                                }
+                             ?>
                         </div>
-                        <div class="panel-heading" align="right">
-                            <button type="button" class="btn btn-success btn-md">Approval</button>
-                            <button type="button" class="btn btn-danger btn-md">Rejected</button>
-                            <button type="button" class="btn btn-warning btn-md">Suggestion</button>
                     </div>
                 </div>
-                 <div class="panel panel-default">
-                    <div class="panel-heading" style="font-size: 20px;"><p>What Is Bootstrap?</p></div>
-                        <div class="panel-body" style="font-size: 15px;">
-                            Bootstrap is front end frameworkto build custom web applications that are fast, responsive &amp; intuitive. It consist of CSS and HTML for typography, forms, buttons, tables, grids, and navigation along with custom-built jQuery plug-ins and support for responsive layouts. With dozens of reusable components for navigation, pagination, labels, alerts etc..                          
-                        </div>
-                        <div class="panel-heading" align="right">
-                            <button type="button" class="btn btn-success btn-md">Approval</button>
-                            <button type="button" class="btn btn-danger btn-md">Rejected</button>
-                            <button type="button" class="btn btn-warning btn-md">Suggestion</button>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading" style="font-size: 20px;"><p>What Is Bootstrap?</p></div>
-                        <div class="panel-body" style="font-size: 15px;">
-                            Bootstrap is front end frameworkto build custom web applications that are fast, responsive &amp; intuitive. It consist of CSS and HTML for typography, forms, buttons, tables, grids, and navigation along with custom-built jQuery plug-ins and support for responsive layouts. With dozens of reusable components for navigation, pagination, labels, alerts etc..                          
-                        </div>
-                        <div class="panel-heading" align="right">
-                            <button type="button" class="btn btn-success btn-md">Approval</button>
-                            <button type="button" class="btn btn-danger btn-md">Rejected</button>
-                            <button type="button" class="btn btn-warning btn-md">Suggestion</button>
-                    </div>
-                </div>
-
-                <div class="row" >
-                    <div class="col-sm-12" >
-                    <a href="#" style="color: #555555; text-decoration: none;" >Twitter</a> <small class="text-muted" style="color: #555555; text-decoration: none;">|</small> <a href="#" style="color: #555555; text-decoration: none;">Facebook</a> <small class="text-muted" style="color: #555555;">|</small> <a href="#" style="color: #555555; text-decoration: none;">Google+</a>
-
-                    <a href="http://www.terx.tech/" target="_blank"  style="color: #555555; text-decoration: none; float: right;margin-bottom: 20px;">Terx ©Copyright 2017</a>
-                    </div>
-                </div>
-                <div class="row" id="footer">
-                    <div class="col-sm-12">
-                        </
-                    </div>
-                        </div>
-
-            </div>  
+                <!-- /.col -->
+            </div>
         </div>
     </div>
 

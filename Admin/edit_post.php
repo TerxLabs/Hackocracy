@@ -1,14 +1,10 @@
-<!--
+<?php
     require 'config.php';
     session_start();
-    $role = $_SESSION['sess_userrole'];
+    $role = $_SESSION['designation'];
     if(!isset($_SESSION['username'])|| $role!="admin"){
         header('Location:login.php?err=2');
     }
--->
-
-<?php
-    require 'config.php';
     if(isset($_GET['id']))
     {
         $id=$_GET['id'];    
@@ -136,9 +132,11 @@
 <aside> 
     <div class="left" > 
         <ul style="text-align: center; padding-left: 0px;font-size: 18px;font-family: sans-serif;margin-top:30px;" class="list">
+             <li style="padding: 10px;text-decoration: none; color: #ffffff;">Hi, <?php echo $_SESSION['username']; ?></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index.php">Home</a></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="admin_profile.php">Profile</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post a New Problem</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post Problem</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_info.php">Users from My City</a></li>
         </ul>
     </div>
     </aside>
