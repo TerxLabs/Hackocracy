@@ -5,6 +5,7 @@
     if(!isset($_SESSION['username'])|| $role!="user"){
         header('Location:login.php?err=2');
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -117,8 +118,8 @@
         <ul style="text-align: center; padding-left: 0px;font-size: 18px;font-family: sans-serif;margin-top:30px;" class="list">
             <li style="padding: 10px;text-decoration: none; color: #ffffff;">Hi, <?php echo $_SESSION['username']; ?></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index-user.php">Home</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_profile.php?username=<?php echo $_SESSION['username'] ?>">Profile</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">My suggestions</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a></li>
+            
         </ul>
     </div>
     </aside>
@@ -142,13 +143,15 @@
                                             <p style="font-size:20px;"><?php echo $row['description'];?></p>
                                             <a href="#" class="btn btn-success" style="margin:5px;">Like</a>
                                             <a href="#" class="btn btn-warning" style="margin:5px;">Dislike</a>
-                                            <a href="edit_post.php?id=<?php echo $row['id']; ?>" class="btn btn-info" style="margin:5px;">Leave a suggestion</a>
+                                            <a href="post_suggest.php?id=<?php echo $row['id']; ?>" class="btn btn-info" style="margin:5px;">Leave a suggestion</a>
+                                            
                                           </div>
                                           
                                         </div>            
                                     </div>
                             <?php
                                 }
+                               
                              ?>
                         </div>
                     </div>

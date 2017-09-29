@@ -119,7 +119,6 @@
              <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index.php">Home</a></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="admin_profile.php">Profile</a></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post Problem</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_info.php">Users from My City</a></li>
         </ul>
     </div>
     </aside>    

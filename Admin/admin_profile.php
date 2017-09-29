@@ -120,8 +120,7 @@
           <li style="padding: 10px;text-decoration: none; color: #ffffff;">Hi, <?php echo $_SESSION['username']; ?></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index.php">Home</a></li>
             <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="admin_profile.php?username=<?php echo $_SESSION['username']; ?>">Profile</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post a New Problem</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_info.php">Users from My City</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post Problem</a></li>
         </ul>
     </div>
     </aside>
@@ -212,7 +211,15 @@
         <div class="form-group">
           <label class="control-label col-sm-2" for="state">State:</label>
           <div class="col-sm-10">          
-            <input type="text" class="form-control" id="state" placeholder="Enter state" name="state" value="<?php echo $row['state'];?>">
+            <select id="state" name="state" class="form-control">
+              <option value="Enter your state">Enter your state</option>
+              <?php
+                $query=mysqli_query($con,"SELECT * FROM state");
+                while($new=$query->fetch_assoc()){  
+              ?>
+              <option value="<?php echo $new['name'];?>"><?php echo $new['name'];?></option>
+              <?php } ?>
+            </select>
           </div>
         </div>
         <div class="form-group">        

@@ -1,11 +1,11 @@
 <?php
-require "config.php";
-session_start();// Starting Session
-// Storing Session
-$login_session=$_SESSION['login_user'];
-if(!isset($login_session)){
-header('Location: login.php'); // Redirecting To Home Page
-} 	
+    require 'config.php';
+    session_start();
+    $role = $_SESSION['designation'];
+    if(!isset($_SESSION['username'])|| $role!="admin"){
+        header('Location:login.php?err=2');
+    }
+	
 
 $pname=$_POST['pname'];
 $pstate=$_POST['pstate'];

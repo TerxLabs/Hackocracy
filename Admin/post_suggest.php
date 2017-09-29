@@ -2,9 +2,25 @@
     require 'config.php';
     session_start();
     $role = $_SESSION['designation'];
-    if(!isset($_SESSION['username'])|| $role!="admin"){
+    if(!isset($_SESSION['username'])|| $role!="user"){
         header('Location:login.php?err=2');
     }
+    if(isset($_GET['id']))
+    {
+        $id=$_GET['id'];    
+        $result = $con->query("SELECT * FROM `problem` WHERE id='$id' ");
+        $row =mysqli_fetch_array($result);
+    }
+    if(isset($_POST['suggest']))
+    {
+        $id=$_POST['id'];
+        $pname=$_POST['pname'];
+        $username=$_SESSION['username'];
+        $psuggest=$_POST['psuggest'];
+        $result= $con->query("INSERT INTO `suggestions`(`problem`, `suggestion`, `username`) VALUES ('$pname','$psuggest','$username') ");
+        echo "<meta http-equiv='refresh' content='0;url=index-user.php'>";
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +32,7 @@
     <meta name="keyword" content="">
     <link rel="shortcut icon" href="img/favicon.png">
 
-    <title>Meri Raay | Admin</title>
+    <title>Meri Raay | Leave Suggestion</title>
 
     <!-- Bootstrap CSS -->    
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -116,44 +132,47 @@
 <aside> 
     <div class="left" > 
         <ul style="text-align: center; padding-left: 0px;font-size: 18px;font-family: sans-serif;margin-top:30px;" class="list">
-            <li style="padding: 10px;text-decoration: none; color: #ffffff;">Hi, <?php echo $_SESSION['username']; ?></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index.php">Home</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="admin_profile.php">Profile</a></li>
-            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">Post Problem</a></li> 
+             <li style="padding: 10px;text-decoration: none; color: #ffffff;">Hi, <?php echo $_SESSION['username']; ?></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="index-user.php">Home</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="user_profile.php">Profile</a></li>
+            <li style="padding: 10px;"><a style="text-decoration: none; color: #ffffff;" href="add_post.php">My Suggestions</a></li>
         </ul>
     </div>
     </aside>
     <div class="right" >
-         <div class="row">
-                    <!-- .col -->
-                    <div class="col-md-12 col-lg-12 col-sm-12">
-                        <div class="white-box" style="border-radius:25px;">
-                            <h3 class="box-title">All Problems</h3>
-                            <?php require "config.php";
-                                $result = $con->query("SELECT * FROM `problem` ORDER BY `timestamp` DESC");
-                                    // output data of each row
-                                    while($row = $result->fetch_assoc()) 
-                                        {
-                                            ?>
-                                       <div class="row" >     
-                                       <div class="panel panel-default" >
-                                          <h3 class="panel-heading" style="margin:0px;padding:10px;font-style:bold;text-transform:none;"><?php echo $row['name'];?><p style="float:right;font-size:15px;"><?php echo $row['timestamp'];?></p></h3>
-                                          <div class="panel-body">
-                                            <p style="background-color:#329FF2;color:#ffffff;padding:2px;font-size:17px;"><?php echo $row['tag'];?></p>
-                                            <p style="font-size:20px;"><?php echo $row['description'];?></p>
-                                            <a href="#" class="btn btn-success" style="margin:5px;"><?php echo $row['count_like'];?> Likes</a>
-                                            <a href="#" class="btn btn-warning" style="margin:5px;"><?php echo $row['count_dislike'];?> Dislike</a>
-                                            <a href="edit_post.php?id=<?php echo $row['id']; ?>" class="btn btn-info" style="margin:5px;">Edit Post</a>
-                                          </div>
-                                          
-                                        </div>            
-                                    </div>
-                            <?php
-                                }
-                             ?>
-                        </div>
-                    </div>
-                </div>
+        <h2 >Leave a suggestion</h2>
+         <form class="form-horizontal" method="POST" action="post_suggest.php" style="margin-left:0px;">
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="pname">Problem Name:</label>
+          <div class="col-sm-10">
+            <input type class="control-label col-sm-2 form-control" for="pname" name="pname" id="pname" style="width:100%;text-align:justify;" value="<?php echo $row['name']; ?>"> 
+            <input type="hidden" name="id" value="<?php echo $row[0]; ?>" >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="pstate">Problem Description:</label>
+          <div class="col-sm-10">          
+            <label class="control-label col-sm-6" for="pstate" style="width:100%;text-align:justify;"><?php echo $row['description']; ?></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="ptag">Problem tags:</label>
+          <div class="col-sm-10">          
+            <label class="control-label col-sm-6" for="ptag" style="width:100%;text-align:justify;"><?php echo $row['tag']; ?></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2" for="psuggest">Your suggestion:</label>
+          <div class="col-sm-10">          
+            <input type="text" class="form-control" id="psuggest" placeholder="Enter your suggestion" name="psuggest">
+          </div>
+        </div>
+        <div class="form-group">        
+          <div class="col-sm-offset-2 col-sm-10">
+            <center><input type="submit" class="btn btn-success" name="suggest" value="Post a suggestion" style="margin-bottom:25px;"></center>
+          </div>
+        </div>
+      </form>
                 <!-- /.col -->
             </div>
         </div>
