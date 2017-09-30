@@ -134,6 +134,7 @@
                                     // output data of each row
                                     while($row = $result->fetch_assoc()) 
                                         {
+                                            $q=$row['name'];
                                             ?>
                                        <div class="row" >     
                                        <div class="panel panel-default" >
@@ -141,6 +142,16 @@
                                           <div class="panel-body">
                                             <p style="background-color:#329FF2;color:#ffffff;padding:2px;font-size:17px;"><?php echo $row['tag'];?></p>
                                             <p style="font-size:20px;"><?php echo $row['description'];?></p>
+                                            <p style="font-size:15px;text-align:justify ;background-color:#01A9DB;color:#ffffff;padding:2px;"> Comments:<br/>
+                                                <?php
+                                                    require 'config.php';
+                                                    $new = $con->query("SELECT * FROM suggestions where problem='$q' ");
+                                                    while($query=$new->fetch_assoc()){?>
+                                                    <br/>
+                                                    <b style="background-color:#01A9DB;color:#ffffff;padding:2px;"><?php echo $query['username']; ?></b>
+                                                    <?php 
+                                                        echo $query['suggestion'].'  '. $query['timestamp']; }?></p>
+                                            <p >
                                             <a href="#" class="btn btn-success" style="margin:5px;"><?php echo $row['count_like'];?> Likes</a>
                                             <a href="#" class="btn btn-warning" style="margin:5px;"><?php echo $row['count_dislike'];?> Dislike</a>
                                             <a href="edit_post.php?id=<?php echo $row['id']; ?>" class="btn btn-info" style="margin:5px;">Edit Post</a>

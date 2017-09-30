@@ -5,7 +5,6 @@
     if(!isset($_SESSION['username'])|| $role!="user"){
         header('Location:login.php?err=2');
     }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -144,14 +143,84 @@
                                             <p style="font-size:20px;"><?php echo $row['description'];?></p>
                                             <p style="font-size:15px;text-align:justify ;background-color:#01A9DB;color:#ffffff;padding:2px;"> Comments:<br/>
                                                 <?php
+                                                    require 'config.php';
                                                     $new = $con->query("SELECT * FROM suggestions where problem='$q' ");
                                                     while($query=$new->fetch_assoc()){?>
+                                                    <br/>
                                                     <b style="background-color:#01A9DB;color:#ffffff;padding:2px;"><?php echo $query['username']; ?></b>
                                                     <?php 
                                                         echo $query['suggestion'].'  '. $query['timestamp']; }?></p>
                                             <p >
-                                            <a href="#" class="btn btn-success" style="margin:5px;text-align:justify;">Like</a>
-                                            <a href="#" class="btn btn-warning" style="margin:5px;">Dislike</a>
+                                            <form action="index-user.php" method=POST>
+                                                <?php
+                                                    $name=$_SESSION['username'];
+                                                    $query1=$con->query("SELECT * FROM likes where username='$name' and pname='$q' ");
+                                                    $query2=$con->query("SELECT * FROM dislikes where username='$name' and pname='$q' ");
+                                                    if(mysqli_num_rows($query1)>0||mysqli_num_rows($query2)>0){
+                                                        ?>
+                                                        <button name='like' disabled class="btn btn-success">
+                                                        <?php
+                                                            $query3=$con->query("SELECT * FROM likes WHERE pname='$q' ");
+                                                            $count=0;
+                                                            if(mysqli_num_rows($query3)>0){
+                                                                while($row1=$query3->fetch_assoc()){
+                                                                    $count++;
+                                                                }
+                                                            }
+                                                            echo $count;?> Likes </button>
+                                                            <?php
+                                                    }else{?>
+                                                    <button name='like' class="btn btn-success">
+                                                        <?php
+                                                            $query4=$con->query("SELECT * from likes WHERE pname='$q'");
+                                                            $count1=0;
+                                                            if(mysqli_num_rows($query4)>0){
+                                                                while($row2=$query4->fetch_assoc()){
+                                                                    $count1++;
+                                                                }
+                                                            }
+                                                            echo $count1;
+                                                            ?>
+                                                        Likes </button>
+                                                        <?php
+                                                    }
+                                                    $con->close();?>
+                                                    <?php
+                                                    require 'config.php';
+                                                    $query5=$con->query("SELECT * FROM likes where username='$name' and pname='$q' ");
+                                                    $query6=$con->query("SELECT * FROM dislikes where username='$name' and pname='$q' ");
+                                                    if(mysqli_num_rows($query5)>0||mysqli_num_rows($query6)>0){
+                                                        ?>
+                                                        <button name='dislike' class="btn btn-warning" disabled>
+                                                        <?php
+                                                            $query7=$con->query("SELECT * FROM dislikes where pname='$q' ");
+                                                            $count2=0;
+                                                            if(mysqli_num_rows($query7)>0){
+                                                                while($row3=$query7->fetch_assoc()){
+                                                                    $count2++;
+                                                                }
+                                                            }
+                                                            echo $count2;?>
+                                                        Dislikes </button>
+                                                        <?php
+                                                    }else{
+                                                        ?>
+                                                        <button name='dislike' class="btn btn-warning" >
+                                                        <?php
+                                                            $query8=$con->query("SELECT * FROM dislikes WHERE pname='$q' ");
+                                                            $count3=0;
+                                                            if(mysqli_num_rows($query8)>0){
+                                                                while($row4=$query8->fetch_assoc()){
+                                                                    $count3++;
+                                                                }
+                                                            }
+                                                            echo $count3;?>
+                                                             Dislikes</button>
+                                                             <?php
+                                                    }
+                                                    $con->close();
+                                                ?>
+                                            </form>
                                             <a href="post_suggest.php?id=<?php echo $row['id']; ?>" class="btn btn-info" style="margin:5px;">Leave a suggestion</a></p>
                                             
                                           </div>
@@ -169,8 +238,27 @@
             </div>
         </div>
     </div>
-
-    
-
+<?php
+    require 'config.php';
+     if(isset($_POST['like'])){
+        $name=$_SESSION['username'];
+        $sql="INSERT INTO `likes`(`liked`, `username`) VALUES('1', '$name',)";
+        if ($con->query($sql) === TRUE) {
+        echo '<script>alert("You Liked");</script>';
+        } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+        }
+    }
+    if(isset($_POST['dislike'])){
+        $name=$_SESSION['username'];
+        $sql="INSERT INTO `dislikes`(`liked`, `username`) VALUES('1', '$name')";
+        if ($con->query($sql) === TRUE) {
+        echo '<script>alert("You Disliked");</script>';
+        } else {
+            echo "Error: " . $sql . "<br>" . $con->error;
+        }
+    }
+    $con->close();
+?>
 </body>
 </html>
